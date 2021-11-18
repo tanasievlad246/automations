@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+gcloud config set project dandsltd-dev
+gcloud config set container/cluster dev
+gcloud config set compute/zone us-central1-a
+gcloud container clusters get-credentials dev

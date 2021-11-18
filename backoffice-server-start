@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
+
+cd /home/build/backoffice/server &&
+nvm use 12.13 &&
+npm run local
