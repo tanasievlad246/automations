@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+gcloud beta compute ssh --zone "us-central1-a" "tanasie_vlad@reports1"  --project "dandsltd-gce"
