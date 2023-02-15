@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+if [$1 == "man"] then
+    echo "
+        arg 1 = Pull request title
+        arg 2 = jira story number
+        arg 3 = Local and testing environment test steps
+        arg 4 = What kind of change does this PR introduce? (bugfix, feature, docs, update, custom message)
+        arg 5 = What is the current behavior?
+        arg 6 = What is the new behavior (if this is a feature change)?
+        arg 7 = Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?) OPTIONAL
+    "
+    exit 0
+fi
+
+change=""
+brchange=""
+
+if [$4 -eq "bugfix"] then
+    change="Bugfix"
+elif [$4 -eq "feature"] then
+    change="Feature"
+elif [$4 -eq "docs"] then
+    change="Docs"
+elif [$4 -eq "update"] then
+    change="Update"
+fi
+
+if [$7 != ""] then
+    brchange=$7
+fi
+
+gh pr create -B dev --title $1 --body "
+    * **Please check if the PR fulfills these requirements**
+    - [ ] The commit message follows our guidelines
+    - [ ] Tests for the changes have been added (for bug fixes / features)
+    - [ ] Docs have been added / updated (for bug fixes / features)
+
+    * **What JIRA issue(s)/Zendesk ticket does this address?**
+    (DRAG-$2)[https://dandsltd.atlassian.net/browse/DRAG-$2]
+
+    * **Local and testing environment test steps**:
+    $3
+
+    * **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
+    $change    
+
+    * **What is the current behavior?** (You can also link to an open issue here)
+    $5
+
+    * **What is the new behavior (if this is a feature change)?**
+    $6
+
+    * **Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?)
+    $brchange
+
+    * **Other information**:
+"

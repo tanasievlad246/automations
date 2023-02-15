@@ -1,1 +1,1 @@
-find . -type f -name '*$1*' | sed -r 's|/[^/]+$||' |sort |uniq
+find . -type f -name "*$1*" | sed -r 's|/[^/]+$||' |sort |uniq
