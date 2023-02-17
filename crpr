@@ -12,21 +12,36 @@ if [ "$1" == "man" ]; then
     "
     exit 0
 else
+    input_array=(
+        "Pull request title",
+        "What JIRA issue does this address?",
+        "Local and testing environment test steps",
+        "What kind of change does this PR introduce? (bugfix, feature, docs update, ...)",
+        "What is the current behavior?",
+        "What is the new behavior",
+        "Does this PR introduce a breaking change? (What changes might users need to make in their application due to this PR?)"
+    )
+
+    for i in {1..6} 
+    do
+        read -p "${input_array[$i]} : " input$i
+    done
+
     change=""
     brchange="No"
 
-    if [ "$4" == "bugfix" ]; then
+    if [ "$input4" == "bugfix" ]; then
         change="Bugfix"
-    elif [ "$4" == "feature" ]; then
+    elif [ "$input4" == "feature" ]; then
         change="Feature"
-    elif [ "$4" == "docs" ]; then
+    elif [ "$input4" == "docs" ]; then
         change="Docs"
-    elif [ "$4" == "update" ]; then
+    elif [ "$input4" == "update" ]; then
         change="Update"
     fi
 
-    if [ "$7" != "" ]; then
-        brchange="$7"
+    if [ "$input7" != "" ]; then
+        brchange="$input7"
     fi
 
 body=$(cat << EOF
@@ -36,19 +51,19 @@ body=$(cat << EOF
     - [ ] Docs have been added / updated (for bug fixes / features)
 
     * **What JIRA issue(s)/Zendesk ticket does this address?**
-    (DRAG-"$2")[https://dandsltd.atlassian.net/browse/DRAG-"$2"]
+    (DRAG-"$input2")[https://dandsltd.atlassian.net/browse/DRAG-"$input2"]
 
     * **Local and testing environment test steps**:
-    "$3"
+    "$input3"
 
     * **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
     "$change"    
 
     * **What is the current behavior?** (You can also link to an open issue here)
-    "$5"
+    "$input5"
 
     * **What is the new behavior (if this is a feature change)?**
-    "$6"
+    "$input6"
 
     * **Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?)
     "$brchange"
@@ -57,5 +72,5 @@ body=$(cat << EOF
 EOF
 )
 
-    gh pr create -B dev --title "$1" --body "$body"
+    gh pr create -B dev --title "$input1" --body "$body"
 fi
