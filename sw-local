@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+minikube start
+kubectl config use-context minikube
+kubectl config get-contexts

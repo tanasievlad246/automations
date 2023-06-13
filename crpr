@@ -13,16 +13,16 @@ if [ "$1" == "man" ]; then
     exit 0
 else
     input_array=(
-        "Pull request title",
-        "What JIRA issue does this address?",
-        "Local and testing environment test steps",
-        "What kind of change does this PR introduce? (bugfix, feature, docs update, ...)",
-        "What is the current behavior?",
-        "What is the new behavior",
+        "Pull request title"
+        "What JIRA issue(s)/Zendesk does this address?"
+        "Local and testing environment test steps"
+        "What kind of change does this PR introduce? (bugfix, feature, docs update, ...)"
+        "What is the current behavior?"
+        "What is the new behavior"
         "Does this PR introduce a breaking change? (What changes might users need to make in their application due to this PR?)"
     )
 
-    for i in {1..6} 
+    for i in {0..6} 
     do
         read -p "${input_array[$i]} : " input$i
     done
@@ -30,18 +30,24 @@ else
     change=""
     brchange="No"
 
-    if [ "$input4" == "bugfix" ]; then
+    if [ "$input3" == "bugfix" ]; then
         change="Bugfix"
-    elif [ "$input4" == "feature" ]; then
+    elif [ "$input3" == "feature" ]; then
         change="Feature"
-    elif [ "$input4" == "docs" ]; then
+    elif [ "$input3" == "docs" ]; then
         change="Docs"
-    elif [ "$input4" == "update" ]; then
+    elif [ "$input3" == "update" ]; then
         change="Update"
     fi
 
-    if [ "$input7" != "" ]; then
-        brchange="$input7"
+    if [ "$input6" != "" ]; then
+        brchange="$input6"
+    fi
+
+    if [ ${#input1} > 4 ]; then
+        url=(TIKET "$input1")[https://dsltd.zendesk.com/agent/tickets/"$input1"]
+    else
+        url=(DRAG-"$input1")[https://dandsltd.atlassian.net/browse/DRAG-"$input1"]
     fi
 
 body=$(cat << EOF
@@ -51,19 +57,19 @@ body=$(cat << EOF
     - [ ] Docs have been added / updated (for bug fixes / features)
 
     * **What JIRA issue(s)/Zendesk ticket does this address?**
-    (DRAG-"$input2")[https://dandsltd.atlassian.net/browse/DRAG-"$input2"]
+    $url
 
     * **Local and testing environment test steps**:
-    "$input3"
+    "$input2"
 
     * **What kind of change does this PR introduce?** (Bug fix, feature, docs update, ...)
     "$change"    
 
     * **What is the current behavior?** (You can also link to an open issue here)
-    "$input5"
+    "$input4"
 
     * **What is the new behavior (if this is a feature change)?**
-    "$input6"
+    "$input5"
 
     * **Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?)
     "$brchange"
@@ -72,5 +78,5 @@ body=$(cat << EOF
 EOF
 )
 
-    gh pr create -B dev --title "$input1" --body "$body"
+    gh pr create -B dev --title "$input0" --body $body
 fi
