@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$1" == "personal" ]; then
+  gh auth login --with-token < ./personal-token.txt
+else
+  gh auth login --with-token < ./work-token.txt
+fi
+
