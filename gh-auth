@@ -1,8 +1,20 @@
 #!/bin/bash
 
+# if [ "$1" == "personal" ]; then
+#   gh auth login --with-token < ./personal-token.txt
+# else
+#   gh auth login --with-token < ./work-token.txt
+# fi
+
 if [ "$1" == "personal" ]; then
-  gh auth login --with-token < ./personal-token.txt
+  echo "Logging in with personal token..."
+  result=$(gh auth login --with-token < /home/$USER/automations/personal-token.txt 2>&1)
+  echo "$result"
+  echo "Personal login completed."
 else
-  gh auth login --with-token < ./work-token.txt
+  echo "Logging in with work token..."
+  result=$(gh auth login --with-token < /home/$USER/automations/work-token.txt 2>&1)
+  echo "$result"
+  echo "Work login completed."
 fi
 
