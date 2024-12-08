@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+gcloud config set project cadex-gce-eu
+gcloud config set container/cluster cadex-gce-eu
+gcloud config set compute/zone europe-west3-a
+gcloud container clusters get-credentials prod
