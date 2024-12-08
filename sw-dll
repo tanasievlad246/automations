@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 gcloud config set project dandsltd-dll
 gcloud config set container/cluster prod
-gcloud config set compute/zone us-central1-a
+gcloud config set compute/zone us-central1
 gcloud container clusters get-credentials prod
